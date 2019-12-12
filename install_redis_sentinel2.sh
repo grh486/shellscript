@@ -20,7 +20,7 @@ echo "sentinel known-slave mymaster $slave_IP2 6379" >> /opt/redis/sentinel.conf
 read -t 60 -p "请输入redis主节点的IP：" master_IP
 echo -e "\n"
 echo "redis主节点的IP为：$master_IP"
-sentinel announce-ip "$master_IP"
+echo "sentinel announce-ip "$master_IP"" >> /opt/redis/sentinel.conf
 chown -R redis:redis /opt/redis
 
 if [ ! -f "/usr/lib/systemd/system/$service" ]; then

@@ -15,19 +15,19 @@ echo "redis压缩包已存在"
 fi
 
 if [  -G "$group" ]; then
+echo "redis用户组已创建"
+else
 echo "redis用户组不存在需创建"
 groupadd $group
 cat /etc/group|grep $group
-else
-echo "redis用户组已创建"
 fi
 
 if [  -O "$user" ]; then
-echo "redis用户不存在需创建"
-useradd $user -g $group
-id $user
-else
 echo "redis用户已创建"
+else
+echo "redis用户不存在需创建"
+useradd $user -g $group -s /sbin/nologin
+id $user
 fi
 
 echo "解决redis依赖"
