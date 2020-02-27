@@ -59,7 +59,7 @@ cat << EOF > $conf
 ES_HOME=/opt/elasticsearch
 
 # Elasticsearch Java path
-JAVA_HOME=/usr/local/jdk1.8.0_221
+JAVA_HOME=/usr/local/jdk1.8.0_231
 
 # Elasticsearch configuration directory
 CONF_DIR=/opt/elasticsearch/config
@@ -119,8 +119,25 @@ MAX_MAP_COUNT=262144
 EOF
 fi
 
+if [ ! -d "/opt/elasticsearch/logs" ]; then
+echo "日志文件夹不存在需创建"
+cd /opt/elasticsearch
+mkdir logs
+else
+echo "日志文件夹已创建"
+fi
+
+if [ ! -d "/opt/elasticsearch/data" ]; then
+echo "数据文件夹不存在需创建"
+cd /opt/elasticsearch
+mkdir data
+else
+echo "数据文件夹已创建"
+fi
+
 #修改elasticsearch配置文件
-sed -i 's/#network.host: 192.168.0.1/network.host: $ip/g' /opt/elasticsearch/config/elasticsearch.yml
+sed -i 's/#network.host: 192.168.0.1/network.host: '$ip'/g' /opt/elasticsearch/config/elasticsearch.yml
+chown -R elasticsearch:elasticsearch /opt/elasticsearch
 
 if [ ! -f "/usr/lib/systemd/system/$service" ]; then
 echo "elasticsearch服务不存在需创建"
@@ -134,7 +151,7 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-Environment=ES_HOME=/data/elasticsearch
+Environment=ES_HOME=/opt/elasticsearch
 Environment=CONF_DIR=/opt/elasticsearch/config
 Environment=DATA_DIR=/opt/elasticsearch/data
 Environment=LOG_DIR=/opt/elasticsearch/logs
@@ -149,11 +166,11 @@ Group=elasticsearch
 ExecStartPre=/opt/elasticsearch/bin/elasticsearch-systemd-pre-exec
 
 ExecStart=/opt/elasticsearch/bin/elasticsearch \
-                                                -p ${PID_DIR}/elasticsearch.pid \
+                                                -p \${PID_DIR}/elasticsearch.pid \
                                                 --quiet \
-                                                -Edefault.path.logs=${LOG_DIR} \
-                                                -Edefault.path.data=${DATA_DIR} \
-                                                -Edefault.path.conf=${CONF_DIR}
+                                                -Edefault.path.logs=\${LOG_DIR} \
+                                                -Edefault.path.data=\${DATA_DIR} \
+                                                -Edefault.path.conf=\${CONF_DIR}
 
 # StandardOutput is configured to redirect to journalctl since
 # some error messages may be logged in standard output before
