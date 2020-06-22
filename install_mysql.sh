@@ -71,6 +71,7 @@ symbolic-links=0
 log-error=/opt/mysql/logs/mysqld.log
 pid-file=/opt/mysql/mysqld.pid
 sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
+lower_case_table_names=1
 [client]
 #character-set-server=utf8
 default-character-set=utf8
