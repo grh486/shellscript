@@ -12,11 +12,11 @@ systemctl enable docker;systemctl start docker;systemctl status docker
 
 sed -i 's/ExecStart=\/usr\/bin\/dockerd -H fd:\/\/ --containerd=\/run\/containerd\/containerd.sock/ExecStart=\/usr\/bin\/dockerd/g' /usr/lib/systemd/system/docker.service
 if [ ! -d "/etc/docker" ]; then
-echo "docker文件夹不存在需创建"
-cd /etc
-mkdir docker
+	echo "docker文件夹不存在需创建"
+	cd /etc
+	mkdir docker
 else
-echo "docker文件夹已创建"
+	echo "docker文件夹已创建"
 fi
 
 if [ ! -f "/etc/docker/daemon.json" ]; then
