@@ -1,2 +1,3 @@
 
 install_mysql_master.sh
+install_mysql_slave.sh
