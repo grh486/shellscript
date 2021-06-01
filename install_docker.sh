@@ -29,9 +29,14 @@ cat << EOF > daemon.json
 "insecure-registries":["registry.cn-shenzhen.aliyuncs.com"],
 "storage-driver": "overlay2",
     "storage-opts": ["overlay2.override_kernel_check=true"],
- "hosts": [
+"hosts": [
     "tcp://0.0.0.0:2375",
-    "unix:///var/run/docker.sock"]
+    "unix:///var/run/docker.sock"],
+"log-driver": "json-file",
+  "log-opts": {
+      "max-size": "10m",
+      "max-file": "10"
+  }
 }
 EOF
 else
