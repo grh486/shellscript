@@ -40,7 +40,7 @@ cat << EOF > daemon.json
 }
 EOF
 else
-echo "docker配置文件已存在"
+	echo "docker配置文件已存在"
 fi
 systemctl daemon-reload;systemctl restart docker;systemctl status docker
 sleep 1
