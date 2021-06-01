@@ -1,6 +1,6 @@
 #!/bin/bash
 yum -y install zlib zlib-devel openssl openssl-devel pcre pcre-devel ncurses-devel gcc gcc-c++
-nginx="nginx-1.16.1.tar.gz"
+nginx="nginx-1.20.0.tar.gz"
 if [  -f /opt/$nginx ]; then
 echo "nginx文件夹不存在，请解压！"
 cd /opt
@@ -25,7 +25,7 @@ useradd -r -s /sbin/nologin -M nginx -g nginx
 id nginx
 fi
 
-cd /opt/nginx-1.16.1
+cd /opt/nginx-1.20.0
 ./configure --user=nginx --group=nginx --prefix=/opt/nginx --with-http_stub_status_module --with-http_ssl_module --with-http_v2_module
 make
 make install
@@ -62,5 +62,26 @@ else
 echo "nginx服务已存在"
 fi
 
+if [ ! -f "/etc/logrotate.d/nginx" ]; then
+echo "nginx日志切分文件不存在需创建"
+cd /etc/logrotate.d/
+touch nginx
+cat << EOF > nginx
+/opt/nginx/logs/*log {
+    create 0664 nginx root
+    daily
+    rotate 10
+    missingok
+    notifempty
+    compress
+    sharedscripts
+    postrotate
+        /bin/kill -USR1 `cat /run/nginx.pid 2>/dev/null` 2>/dev/null || true
+    endscript
+}
+EOF
+else
+echo "nginx日志切分文件已存在"
+fi
 #启动服务
 systemctl daemon-reload && systemctl enable nginx && systemctl start nginx && systemctl status nginx && ps -ef|grep nginx
