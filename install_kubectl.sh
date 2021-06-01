@@ -1,7 +1,7 @@
 #!/bin/bash
 IP=`hostname -i`
-#wget -T 15 -c https://dl.k8s.io/v1.18.19/kubernetes-server-linux-amd64.tar.gz
-#tar -zxvf kubernetes-server-linux-amd64.tar.gz
+wget -T 15 -c https://dl.k8s.io/v1.18.19/kubernetes-server-linux-amd64.tar.gz
+tar -zxvf kubernetes-server-linux-amd64.tar.gz
 cd kubernetes/server/bin/
 cp kubectl /usr/local/bin/
 cd ../../../
