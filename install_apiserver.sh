@@ -53,7 +53,7 @@ EOF
 #生成apiserver证书
 /usr/local/bin/cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes kube-apiserver-csr.json | /usr/local/bin/cfssljson -bare kube-apiserver
 if [ -f kube-apiserver.csr ] && [ -f kube-apiserver-key.pem ] && [ kube-apiserver.pem ]; then
-	echo "apiserver 3个这证书都生成"
+	echo "apiserver 3个证书都生成"
 else
 	echo "证书有问题"
 fi
