@@ -1,8 +1,8 @@
 #!/bin/bash
 IP=`hostname -i`
-if [ ! -d /etc/etcd/ssl ]; then
+if [ ! -f /etc/etcd/ssl ]; then
 	echo "etcd/ssl文件夹不存在"
-	if [ ! -d /etc/etcd ]; then
+	if [ ! -f /etc/etcd/ssl ]; then
 		echo "创建etcd文件夹及子目录ssl"
 		mkdir -pv /etc/etcd/ssl
 	fi		
@@ -110,6 +110,7 @@ ETCD_NAME="default"
 ETCD_DATA_DIR="/var/lib/etcd/default.etcd"
 ETCD_LISTEN_PEER_URLS="https://$IP:2380"
 ETCD_LISTEN_CLIENT_URLS="https://$IP:2379,http://127.0.0.1:2379"
+ETCD_ADVERTISE_CLIENT_URLS="https://$IP:2379,http://127.0.0.1:2379"
 EOF
 #创建etcd服务
 cat << EOF > etcd.service
