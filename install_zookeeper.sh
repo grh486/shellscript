@@ -6,12 +6,11 @@ user=zookeeper
 java=java.env
 zoo=zoo.cfg
 service=zookeeper.service
-path=/opt/zookeeper
-ip=`ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6 | awk '{print $2}' | tr -d "addr:"`
+path=/data/zookeeper
 
-if [ -f /opt/$zookeeper ]; then
+if [ -f /data/$zookeeper ]; then
 echo "zookeeper压缩包不存在，请解压！"
-cd /opt
+cd /data
 tar -zxvf $zookeeper
 else
 echo "zookeeper压缩包已存在"
@@ -34,45 +33,45 @@ else
 echo "zookeeper用户已创建"
 fi
 
-if [ -f "/opt/zookeeper/conf/$java" ]; then
+if [ -f "/data/zookeeper/conf/$java" ]; then
 echo "$java配置文件已存在"
 else
 echo "$java配置文件不存在需创建"
-cd /opt/zookeeper/conf
+cd /data/zookeeper/conf
 touch $java
 cat << EOF > $java
-export JAVA_HOME=/usr/local/jdk1.8.0_231
+export JAVA_HOME=/usr/local/jdk1.8.0_144
 # heap size MUST be modified according to cluster environment
 export JVMFLAGS="-Xms512m -Xmx1024m \$JVMFLAGS"
 EOF
 fi
 
-if [ -f "/opt/zookeeper/conf/$zoo" ]; then
+if [ -f "/data/zookeeper/conf/$zoo" ]; then
 echo "$zoo配置文件已存在"
 else
 echo "$zoo配置文件不存在需创建"
-cd /opt/zookeeper/conf
+cd /data/zookeeper/conf
 touch $zoo
 cat << EOF > $zoo
 tickTime=2000
-dataDir=/opt/zookeeper/data
+dataDir=/data/zookeeper/data
 clientPort=2181
 initLimit=5
 syncLimit=2
-server.1=$ip:2888:3888
-dataLogDir=/opt/zookeeper/logs
+server.1=127.0.0.1:2888:3888
+dataLogDir=/data/zookeeper/logs
 EOF
 fi
 
-if [ -d "/opt/zookeeper/data" ]; then
+if [ -d "/data/zookeeper/data" ]; then
 echo "data文件夹已存在"
-elif [ -f "/opt/zookeeper/data/myid" ]; then
+elif [ -f "/data/zookeeper/data/myid" ]; then
 echo "myid文件已存在"
 else
 echo "data文件夹不存在需创建"
-mkdir /opt/zookeeper/data
+mkdir /data/zookeeper/data
 echo "myid文件不存在需创建"
-cd /opt/zookeeper/data
+cd /data/zookeeper/data
 echo "1" > myid
 fi
 
@@ -89,9 +88,9 @@ After=syslog.target network.target
 
 [Service]
 Type=forking
-Environment=ZOO_LOG_DIR=/opt/zookeeper/bin
-ExecStart=/opt/zookeeper/bin/zkServer.sh start
-ExecStop=/opt/zookeeper/bin/zkServer.sh stop
+Environment=ZOO_LOG_DIR=/data/zookeeper/bin
+ExecStart=/data/zookeeper/bin/zkServer.sh start
+ExecStop=/data/zookeeper/bin/zkServer.sh stop
 Restart=always
 User=zookeeper
 Group=zookeeper
