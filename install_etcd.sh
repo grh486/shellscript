@@ -1,8 +1,8 @@
 #!/bin/bash
 IP=`hostname -i`
-if [ ! -f /etc/etcd/ssl ]; then
+if [ ! -d /etc/etcd/ssl ]; then
 	echo "etcd/ssl文件夹不存在"
-	if [ ! -f /etc/etcd ]; then
+	if [ ! -d /etc/etcd ]; then
 		echo "创建etcd文件夹及子目录ssl"
 		mkdir -pv /etc/etcd/ssl
 	fi		
