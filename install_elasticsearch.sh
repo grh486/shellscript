@@ -38,7 +38,7 @@ fi
 
 if [  -O "$user" ]; then
 echo "elasticsearch用户不存在需创建"
-useradd $user -g $group
+useradd -r $user -g $group -s /sbin/nologin
 id $user
 else
 echo "elasticsearch用户已创建"
@@ -136,8 +136,8 @@ echo "数据文件夹已创建"
 fi
 
 #修改elasticsearch配置文件
-sed -i 's/#network.host: 192.168.0.1/network.host: '$ip'/g' /opt/elasticsearch/config/elasticsearch.yml
-chown -R elasticsearch:elasticsearch /opt/elasticsearch
+sed -i 's/#network.host: 192.168.0.1/network.host: 0.0.0.0/g' /opt/elasticsearch/config/elasticsearch.yml
+/usr/bin/chown -R elasticsearch:elasticsearch /opt/elasticsearch
 
 if [ ! -f "/usr/lib/systemd/system/$service" ]; then
 echo "elasticsearch服务不存在需创建"
@@ -165,11 +165,11 @@ Group=elasticsearch
 
 ExecStartPre=/opt/elasticsearch/bin/elasticsearch-systemd-pre-exec
 
-ExecStart=/opt/elasticsearch/bin/elasticsearch \
-                                                -p \${PID_DIR}/elasticsearch.pid \
-                                                --quiet \
-                                                -Edefault.path.logs=\${LOG_DIR} \
-                                                -Edefault.path.data=\${DATA_DIR} \
+ExecStart=/opt/elasticsearch/bin/elasticsearch \\
+                                                -p \${PID_DIR}/elasticsearch.pid \\
+                                                --quiet \\
+                                                -Edefault.path.logs=\${LOG_DIR} \\
+                                                -Edefault.path.data=\${DATA_DIR} \\
                                                 -Edefault.path.conf=\${CONF_DIR}
 
 # StandardOutput is configured to redirect to journalctl since
