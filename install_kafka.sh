@@ -2,11 +2,13 @@
 cd /opt
 tar -xvf kafka_2.12-2.7.0.tgz
 mv kafka_2.12-2.7.0 kafka 
-sed -i 's/broker.id=0/broker.id=1/g' /opt/kafka/config/server.properties
-read -t 60 -p "请输入kafka的IP：" kafka_IP
-echo -e "\n"
-echo "kakfa的IP为：$kakfa_IP"
-sed -i 's/#listeners=PLAINTEXT:\/\/:9092/listeners=PLAINTEXT:\/\/'$kafka_IP':9092/g' /opt/kafka/config/server.properties
+IP=`hostname -i`
+#sed -i 's/broker.id=0/broker.id=1/g' /opt/kafka/config/server.properties
+#read -t 60 -p "请输入kafka的IP：" kafka_IP
+#echo -e "\n"
+#echo "kakfa的IP为：$kakfa_IP"
+#sed -i 's/#listeners=PLAINTEXT:\/\/:9092/listeners=PLAINTEXT:\/\/'$kafka_IP':9092/g' /opt/kafka/config/server.properties
+sed -i 's/#listeners=PLAINTEXT:\/\/:9092/listeners=PLAINTEXT:\/\/$IP:9092/g' /opt/kafka/config/server.properties
 read -t 60 -p "请输入zookeeper的IP：" zookeeper_IP
 echo -e "\n"
 echo "zookeeper的IP为：$zookeeper_IP"
