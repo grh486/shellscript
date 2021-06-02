@@ -7,6 +7,7 @@ java=java.env
 zoo=zoo.cfg
 service=zookeeper.service
 path=/data/zookeeper
+IP=`hostname -i`
 
 if [ -f /data/$zookeeper ]; then
 echo "zookeeper压缩包不存在，请解压！"
@@ -58,7 +59,7 @@ dataDir=/data/zookeeper/data
 clientPort=2181
 initLimit=5
 syncLimit=2
-server.1=127.0.0.1:2888:3888
+server.1=$IP:2888:3888
 dataLogDir=/data/zookeeper/logs
 EOF
 fi
@@ -109,4 +110,4 @@ else
     ls -l --color=auto -d $path
 fi
 
-systemctl daemon-reload && systemctl enable zookeeper && systemctl start zookeeper && systemctl status zookeeper && ps -ef|grep zookeeper
+systemctl daemon-reload && systemctl enable zookeeper && systemctl start zookeeper && systemctl status zookeeper && ps -ef|grep zookeeper && lsof -i:2181
