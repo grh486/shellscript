@@ -26,7 +26,7 @@ id nginx
 fi
 
 cd /opt/nginx-1.20.0
-./configure --user=nginx --group=nginx --prefix=/opt/nginx --with-http_stub_status_module --with-http_ssl_module --with-http_v2_module
+./configure --user=nginx --group=nginx --prefix=/opt/nginx --with-http_stub_status_module --with-http_ssl_module --with-http_v2_module --with-http_gzip_static_module
 make
 make install
 
