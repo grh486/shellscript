@@ -20,7 +20,7 @@ After=network.target rocketmq-namesrv.service
 [Service]
 Type=sample
 User=root
-ExecStart=/opt/rocketmq/bin/mqbroker -c /opt/rocketmq/conf/broker.conf
+ExecStart=/data/rocketmq/bin/mqbroker -n $rocketmq_IP:9876 -c /data/rocketmq/conf/broker.conf autoCreateTopicEnable=true
 ExecReload=/usr/bin/kill -s HUP $MAINPID
 ExecStop=/usr/bin/kill -s QUIT $MAINPID
 Restart=0
