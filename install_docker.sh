@@ -27,6 +27,7 @@ cat << EOF > daemon.json
 {
 "registry-mirrors": ["http://hub-mirror.c.163.com"],
 "insecure-registries":["registry.cn-shenzhen.aliyuncs.com"],
+"exec-opts": ["native.cgroupdriver=systemd"],
 "storage-driver": "overlay2",
     "storage-opts": ["overlay2.override_kernel_check=true"],
 "hosts": [
