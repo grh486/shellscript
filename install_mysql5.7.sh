@@ -2,13 +2,14 @@
 rpm_name[1]=mariadb
 rpm_name[2]=mariadb-server
 rpm_name[3]=mariadb-libs
-mysql=mysql-5.7.27-linux-glibc2.12-x86_64.tar.gz
-contents=mysql-5.7.27-linux-glibc2.12-x86_64
+mysql=mysql-5.7.32-linux-glibc2.12-x86_64.tar.gz
+contents=mysql-5.7.32-linux-glibc2.12-x86_64
 group=mysql
 user=mysql
 conf=my.cnf
 path=/opt/mysql
 service="mysqld.service"
+yum install libaio-devel -y
 #old_pass=`cat /opt/mysql/logs/mysqld.log |grep "root@localhost:"|cut -d " " -f 11`
 #new_pass=jianxinzhuhe
 host="localhost"
@@ -150,7 +151,7 @@ WantedBy=multi-user.target
 User=mysql
 Group=mysql
 ExecStart=/opt/mysql/bin/mysqld --defaults-file=/etc/my.cnf
-LimitNOFILE = 5000
+LimitNOFILE = 65536
 EOF
 else
 echo "mysql服务已存在"
